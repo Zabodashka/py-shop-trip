@@ -1,6 +1,7 @@
-class Car:
-    """Car with brand and fuel consumption per 100 km."""
+from typing import Any
 
+
+class Car:
     def __init__(self, brand: str, fuel_consumption: float) -> None:
         self.brand = brand
-        self.fuel_consumption = fuel_consumption
+        self.fuel_consumption = fuel_consumption  # л/100 км
