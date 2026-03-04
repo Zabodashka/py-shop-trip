@@ -2,41 +2,38 @@ from typing import Dict
 from app.car import Car
 from app.shop import Shop
 
-
 class Customer:
-    def __init__(
-        self, name: str, money: float, location: list, product_cart: Dict[str, int],
-        car: Car
-    ) -> None:
+    def __init__(self, name: str, money: float,
+                 product_cart: Dict[str, int], location: list,
+                 car: Car) -> None:
         self.name = name
         self.money = money
-        self.location = location
         self.product_cart = product_cart
+        self.location = location
         self.car = car
 
     def trip_cost(self, shop: Shop, fuel_price: float) -> float:
-        distance = ((self.location[0] - shop.location[0]) ** 2 +
-                    (self.location[1] - shop.location[1]) ** 2) ** 0.5
-        round_trip_fuel = distance * 2 * self.car.fuel_consumption / 100 * fuel_price
-        products_cost = sum(shop.products.get(p, 0) * c
-                            for p, c in self.product_cart.items())
-        return round_trip_fuel + products_cost
+        distance = ((self.location[0] - shop.location[0]) ** 2
+                    + (self.location[1] - shop.location[1]) ** 2) ** 0.5
+        fuel_cost = distance * 2 * self.car.fuel_consumption / 100 * fuel_price
+        products_cost = sum(
+            self.product_cart[p] * shop.products[p]
+            for p in self.product_cart if p in shop.products
+        )
+        return fuel_cost + products_cost
 
     def go_shopping(self, shop: Shop, fuel_price: float) -> None:
         total_cost = self.trip_cost(shop, fuel_price)
-        if self.money < total_cost:
-            print(
-                f"{self.name} doesn't have enough money to make a purchase "
-                "in any shop"
+        if self.money >= total_cost:
+            print(f"{self.name} rides to {shop.name}")
+            for product, count in self.product_cart.items():
+                if product in shop.products:
+                    price = count * shop.products[product]
+                    print(f"{count} {product}s: ${price:.2f}")
+                    self.money -= price
+            fuel_cost = total_cost - sum(
+                self.product_cart[p] * shop.products[p]
+                for p in self.product_cart if p in shop.products
             )
-            return
-
-        distance = ((self.location[0] - shop.location[0]) ** 2 +
-                    (self.location[1] - shop.location[1]) ** 2) ** 0.5
-        fuel_cost = distance * 2 * self.car.fuel_consumption / 100 * fuel_price
-        print(f"{self.name} rides to {shop.name}")
-        shop.print_receipt(self.name, self.product_cart)
-        self.money -= total_cost
-        self.location = shop.location
-        print(f"{self.name} rides home")
-        print(f"{self.name} has {self.money:.2f} dollars left\n")
+            self.money -= fuel_cost
+            print(f"{self.name} rides home")
