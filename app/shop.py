@@ -8,8 +8,14 @@ class Shop:
         self.location = location
         self.products = products
 
-    def print_receipt(self) -> None:
+    def print_receipt(self, customer_name: str, product_cart: Dict[str, int]) -> None:
         now = datetime.datetime.now()
-        print(f"Receipt from {self.name} at {now.isoformat()}")
-        for product, price in self.products.items():
-            print(f"{product}s: ${price:.2f}")
+        print(f"Date: {now.isoformat()}")
+        print(f"Thank you, {customer_name}!")
+        total_cost = 0.0
+        for product, count in product_cart.items():
+            price = self.products.get(product, 0) * count
+            total_cost += price
+            print(f"{count} {product}s for ${price:.2f}")
+        print(f"Total cost is ${total_cost:.2f}")
+        print("See you again!")
