@@ -26,7 +26,8 @@ def shop_trip() -> None:
         for shop in shops:
             cost = customer.trip_cost(shop, fuel_price)
             print(
-                f"{customer.name}'s trip to {shop.name} costs {cost:.2f}"
+                f"{customer.name}'s trip to {shop.name} costs "
+                f"{cost:.2f}"
             )
             trips.append((cost, shop))
 
@@ -37,7 +38,6 @@ def shop_trip() -> None:
                 break
         else:
             print(
-                f"{customer.name} doesn't have enough money to make a purchase "
-                "in any shop"
+                f"{customer.name} doesn't have enough money to make a "
+                "purchase in any shop"
             )
-            
