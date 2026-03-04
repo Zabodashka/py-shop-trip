@@ -1,7 +1,6 @@
-from typing import Any
+from dataclasses import dataclass
 
-
+@dataclass
 class Car:
-    def __init__(self, brand: str, fuel_consumption: float) -> None:
-        self.brand = brand
-        self.fuel_consumption = fuel_consumption  # л/100 км
+    brand: str
+    fuel_consumption: float  # liters per 100 km
