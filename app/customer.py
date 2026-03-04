@@ -1,55 +1,36 @@
-from typing import Dict, List
-from .car import Car
-from .shop import Shop
-import math
+from typing import Dict
+from app.car import Car
+from app.shop import Shop
 
 
 class Customer:
-    def __init__(
-        self,
-        name: str,
-        product_cart: Dict[str, int],
-        location: List[int],
-        money: float,
-        car: Car,
-    ) -> None:
+    """Customer with a car, location, money, and shopping list."""
+
+    def __init__(self, name: str, product_cart: Dict[str, int],
+                 location: list[int], money: float, car: Car) -> None:
         self.name = name
         self.product_cart = product_cart
         self.location = location
         self.money = money
         self.car = car
 
-    def distance_to(self, other_location: List[int]) -> float:
-        return math.hypot(
-            self.location[0] - other_location[0],
-            self.location[1] - other_location[1],
-        )
-
     def trip_cost(self, shop: Shop, fuel_price: float) -> float:
-        distance = self.distance_to(shop.location)
-        fuel_needed = distance * self.car.fuel_consumption / 100
-        cost_to_shop = fuel_needed * fuel_price
-        product_cost = sum(
-            shop.products[p] * q for p, q in self.product_cart.items()
-        )
-        return round(cost_to_shop * 2 + product_cost, 2)
+        """Calculate fuel cost for a trip to the shop and back."""
+        dx = self.location[0] - shop.location[0]
+        dy = self.location[1] - shop.location[1]
+        distance = (dx**2 + dy**2)**0.5 * 2  # round trip
+        return (distance / 100) * self.car.fuel_consumption * fuel_price
 
     def go_shopping(self, shop: Shop, fuel_price: float) -> None:
-        distance = self.distance_to(shop.location)
-        fuel_needed = distance * self.car.fuel_consumption / 100
-        cost_to_shop = fuel_needed * fuel_price
-        product_cost = sum(
-            shop.products[p] * q for p, q in self.product_cart.items()
-        )
-        total_trip_cost = cost_to_shop * 2 + product_cost
+        """Make a trip and buy products if enough money."""
+        cost = self.trip_cost(shop, fuel_price)
+        if self.money < cost:
+            print(f"{self.name} doesn't have enough money to make a purchase in any shop")
+            return
 
-        self.location = shop.location
-        print(f"{self.name} rides to {shop.name}")
-
-        shop.print_receipt(self.name, self.product_cart)
-
-        self.money -= total_trip_cost
-        self.money = round(self.money, 2)
-        print(f"{self.name} rides home")
-        print(f"{self.name} now has {self.money} dollars")
-        print()
+        self.money -= cost
+        for product, amount in self.product_cart.items():
+            price = shop.products[product] * amount
+            self.money -= price
+            print(f"{amount} {product}s: ${price:.2f}")
+            
