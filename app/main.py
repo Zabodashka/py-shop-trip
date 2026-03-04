@@ -34,6 +34,8 @@ def shop_trip() -> None:
                 customer.go_shopping(shop, fuel_price)
                 break
         else:
-            print(f"{customer.name} doesn't have enough money to make a purchase "
-                  "in any shop")
+            print(
+                f"{customer.name} doesn't have enough money to make a purchase "
+                "in any shop"
+            )
             
