@@ -25,7 +25,9 @@ def shop_trip() -> None:
         trips = []
         for shop in shops:
             cost = customer.trip_cost(shop, fuel_price)
-            print(f"{customer.name}'s trip to {shop.name} costs {cost:.2f}")
+            print(
+                f"{customer.name}'s trip to {shop.name} costs {cost:.2f}"
+            )
             trips.append((cost, shop))
 
         trips.sort(key=lambda t: t[0])
