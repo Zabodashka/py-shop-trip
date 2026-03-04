@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class Car:
     """Car with brand and fuel consumption per 100 km."""
 
