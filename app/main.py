@@ -1,9 +1,11 @@
 import json
 import os
 from typing import Any, Dict, List
+
+from app.car import Car
 from app.customer import Customer
 from app.shop import Shop
-from app.car import Car
+
 
 def shop_trip() -> None:
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
@@ -13,6 +15,7 @@ def shop_trip() -> None:
     fuel_price: float = config["FUEL_PRICE"]
     shops: List[Shop] = [Shop(**s) for s in config["shops"]]
     customers: List[Customer] = []
+
     for cust_data in config["customers"]:
         car_data = cust_data.pop("car")
         customer_car = Car(**car_data)
