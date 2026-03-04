@@ -36,4 +36,3 @@ class Customer:
             price = shop.products[product] * amount
             self.money -= price
             print(f"{amount} {product}s: ${price:.2f}")
-            
