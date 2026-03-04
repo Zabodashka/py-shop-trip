@@ -20,4 +20,3 @@ class Shop:
             total += price
             print(f"{amount} {product}s: ${price:.2f}")
         print(f"Total: ${total:.2f}")
-        
