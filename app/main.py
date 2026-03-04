@@ -23,20 +23,16 @@ def shop_trip() -> None:
 
     for customer in customers:
         print(f"{customer.name} has {customer.money:.2f} dollars")
-        trips = []
-        for shop in shops:
-            cost = customer.trip_cost(shop, fuel_price)
-            print(f"{customer.name} rides to {shop.name} costs {cost:.2f}")
-            trips.append((cost, shop))
+        trips = [(customer.trip_cost(shop, fuel_price), shop) for shop in shops]
         trips.sort(key=lambda t: t[0])
-        for cost, shop in trips:
-            if customer.money >= cost:
+        for total_cost, shop in trips:
+            if customer.money >= total_cost:
                 customer.go_shopping(shop, fuel_price)
                 break
         else:
             print(
-                f"{customer.name} doesn't have enough money to make a "
-                "purchase in any shop"
+                f"{customer.name} doesn't have enough money to make a purchase "
+                "in any shop"
             )
 
 
