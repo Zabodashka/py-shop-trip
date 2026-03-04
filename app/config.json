@@ -23,7 +23,7 @@
       "products": {"milk": 3, "bread": 1, "butter": 2.5}
     },
     {
-      "name": "Shop 24/7",
+      "name": "Shop '24/7'",
       "location": [4, 3],
       "products": {"milk": 2, "bread": 1.5, "butter": 3.2}
     }
