@@ -25,7 +25,10 @@ class Customer:
         """Make a trip and buy products if enough money."""
         cost = self.trip_cost(shop, fuel_price)
         if self.money < cost:
-            print(f"{self.name} doesn't have enough money to make a purchase in any shop")
+            print(
+                f"{self.name} doesn't have enough money to make a purchase "
+                "in any shop"
+            )
             return
 
         self.money -= cost
