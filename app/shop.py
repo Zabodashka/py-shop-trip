@@ -5,7 +5,8 @@ from typing import Dict
 class Shop:
     """Shop with name, location, and products."""
 
-    def __init__(self, name: str, location: list[int], products: Dict[str, float]) -> None:
+    def __init__(self, name: str, location: list[int],
+                 products: Dict[str, float]) -> None:
         self.name = name
         self.location = location
         self.products = products
