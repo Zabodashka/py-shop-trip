@@ -1,18 +1,16 @@
 import json
-import os
 from typing import Any, Dict, List
-from .customer import Customer
-from .shop import Shop
-from .car import Car
+from app.customer import Customer
+from app.car import Car
+from app.shop import Shop
 
 
 def shop_trip() -> None:
-    config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    with open(config_path) as file:
+    """Load config and simulate shopping trips for customers."""
+    with open("app/config.json") as file:
         config: Dict[str, Any] = json.load(file)
 
     fuel_price: float = config["FUEL_PRICE"]
-
     shops: List[Shop] = [Shop(**s) for s in config["shops"]]
     customers: List[Customer] = []
 
@@ -24,12 +22,10 @@ def shop_trip() -> None:
 
     for customer in customers:
         print(f"{customer.name} has {customer.money} dollars")
-        trips: List = []
+        trips = []
         for shop in shops:
             cost = customer.trip_cost(shop, fuel_price)
-            print(
-                f"{customer.name}'s trip to {shop.name} costs {cost}"
-            )
+            print(f"{customer.name}'s trip to {shop.name} costs {cost:.2f}")
             trips.append((cost, shop))
 
         trips.sort(key=lambda t: t[0])
@@ -38,7 +34,6 @@ def shop_trip() -> None:
                 customer.go_shopping(shop, fuel_price)
                 break
         else:
-            print(
-                f"{customer.name} doesn't have enough money to make a "
-                "purchase in any shop"
-            )
+            print(f"{customer.name} doesn't have enough money to make a purchase "
+                  "in any shop")
+            
