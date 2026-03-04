@@ -1,7 +1,6 @@
 import datetime
 from typing import Dict
 
-
 class Shop:
     def __init__(self, name: str, location: list, products: Dict[str, float]) -> None:
         self.name = name
@@ -12,10 +11,11 @@ class Shop:
         now = datetime.datetime.now()
         print(f"Date: {now.isoformat()}")
         print(f"Thank you, {customer_name}!")
-        total_cost = 0.0
+        total = 0
         for product, count in product_cart.items():
-            price = self.products.get(product, 0) * count
-            total_cost += price
-            print(f"{count} {product}s for ${price:.2f}")
-        print(f"Total cost is ${total_cost:.2f}")
+            if product in self.products:
+                price = self.products[product] * count
+                total += price
+                print(f"{count} {product}s: ${price:.2f}")
+        print(f"Total cost is ${total:.2f}")
         print("See you again!")
